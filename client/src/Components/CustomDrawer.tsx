@@ -13,12 +13,14 @@ import Groups2Icon from '@mui/icons-material/Groups2';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Button } from '@mui/material';
 import Connexion from './Dialog/Connexion';
+import Inscription from './Dialog/Inscription';
 
 const drawerWidth = 240;
 
 
 function CustomDrawer() {
     const [openConnexion, setOpenConnexion] = useState(false)
+    const [openInscription, setOpenInscription] = useState(false)
 
     return (
         <Drawer
@@ -67,10 +69,11 @@ function CustomDrawer() {
         
         <Box p={2}>
           <Button variant="contained" fullWidth onClick={() => setOpenConnexion(true)}>Se connecter</Button>
-          <Button variant="outlined" fullWidth sx={{mt: 2}}>S'inscrire</Button>
+          <Button variant="outlined" fullWidth onClick={() => setOpenInscription(true)} sx={{mt: 2}}>S'inscrire</Button>
         </Box>
         
         <Connexion open={openConnexion} onClose={() => setOpenConnexion(false)} />
+        <Inscription open={openInscription} onClose={() => setOpenInscription(false)} />
         
       </Drawer>
     )
