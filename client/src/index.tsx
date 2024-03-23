@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CssBaseline from '@mui/material/CssBaseline';
+import { SnackbarProvider } from 'notistack';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -15,8 +16,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <CssBaseline />
-    <App />
+    <SnackbarProvider anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
+      <CssBaseline />
+      <App />
+    </SnackbarProvider>
   </React.StrictMode>
 );
 

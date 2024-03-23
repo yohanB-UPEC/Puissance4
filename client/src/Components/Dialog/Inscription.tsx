@@ -4,6 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import useCreateUserLazy from '../../Fetchs/CreateUser';
 
 interface InscriptionProps {
@@ -14,6 +15,8 @@ interface InscriptionProps {
 function Inscription({ open, onClose }: InscriptionProps) {
     const [formData, setFormData] = useState({username: "", email: "", password: ""})
     const {data, isLoading, error, createUser, reset} = useCreateUserLazy()
+    const { enqueueSnackbar } = useSnackbar();
+
     useEffect(() => {
         if(open) {
             setFormData({username: "",email: "", password: ""})
@@ -30,6 +33,7 @@ function Inscription({ open, onClose }: InscriptionProps) {
         )
         .then((result) => {
             console.log("Utilisateur créé :", result);
+            enqueueSnackbar("Un nouveau compte utilisateur a été créé avec succès.", {autoHideDuration: 5000, variant: "success"});
             onClose();
         })
         .catch((error) => {
