@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from 'cors';
 import UserRoutes from "./Routes/Users";
 import MatchMakingRoutes from "./Routes/Matchmaking";
+import { searchMatchmaking } from "./Services/MatchmakingService";
 
 const app = express();
 const port = 3000;
@@ -26,3 +27,5 @@ app.use("/", MatchMakingRoutes);
 app.listen(port, () => {
   console.log(`server is listening on http://localhost:${port}....`);
 });
+
+searchMatchmaking();

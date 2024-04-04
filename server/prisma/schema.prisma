@@ -28,6 +28,12 @@ model User {
 
   // La file d'attente de matchmaking du joueur
   matchmakingQueue MatchmakingQueue?
+
+  // Les propositions de partie où le joueur est le joueur 1
+  player1Propositions Proposition[] @relation("player1Propositions")
+
+  // Les propositions de partie où le joueur est le joueur 2
+  player2Propositions Proposition[] @relation("player2Propositions")
 }
 
 model Match {
@@ -57,4 +63,20 @@ model MatchmakingQueue {
 
   // Clé étrangère pour lier le joueur en attente
   player     User     @relation(fields: [playerId], references: [id])
+}
+
+// crée un model Proposition dont les tuples sont automatiquement supprimé après 15 secondes d'existance
+model Proposition {
+  id         Int      @id @default(autoincrement())
+  player1Id  Int
+  player2Id  Int
+  player1Accepted Boolean @default(false)
+  player2Accepted Boolean @default(false)
+  createdAt  DateTime @default(now())
+
+  // Clé étrangère pour lier le joueur 1
+  player1    User     @relation(name: "player1Propositions", fields: [player1Id], references: [id])
+
+  // Clé étrangère pour lier le joueur 2
+  player2    User     @relation(name: "player2Propositions", fields: [player2Id], references: [id])
 }

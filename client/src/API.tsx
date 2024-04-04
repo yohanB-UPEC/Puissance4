@@ -1,3 +1,4 @@
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { access } from "fs";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
@@ -26,6 +27,7 @@ async function requestRefreshToken() : Promise<boolean> {
     
     if(!rep.ok) {
         console.log(rep)
+        setTokens(null, null);
         return false;
     }
 
@@ -46,6 +48,12 @@ const API = {
             body: JSON.stringify(data),
             
         });
+    },
+    eventSource: (url: string, options: any, authenticated: boolean = false): Promise<void> => {
+        return fetchEventSource(`${API.url}/matchmaking/events`, {
+            headers: { "authorization": `Bearer ${accessToken}` },
+            ...options
+        })
     },
     setTokens: setTokens,
     async isAuth() : Promise<boolean> {
