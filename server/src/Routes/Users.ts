@@ -3,6 +3,7 @@ import prisma from "../Services/client";
 import { body, validationResult } from 'express-validator';
 import { generateAccessToken, generateRefreshToken, validateToken } from "../Services/Token";
 import { User } from "@prisma/client";
+import jwt from 'jsonwebtoken';
 const bcrypt = require ('bcrypt')
 
 
@@ -107,20 +108,33 @@ router.post("/refreshToken", [
             return res.status(400).json({msg: "Token invalide"});
         }
 
-        const accessToken = generateAccessToken({userId: user.id});
-        refreshToken = generateRefreshToken({userId: user.id});
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string, async (err: any, user2: any) => {
+            if(err) {
+                await prisma.user.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        refreshToken: null
+                    }
+                });
+                return res.status(403).send("Invalid token")
+            }else {
+                const accessToken = generateAccessToken({userId: user.id});
+                refreshToken = generateRefreshToken({userId: user.id});
 
-        // Save the refresh token in the database
-        await prisma.user.update({
-            where: {
-                id: user.id
-            },
-            data: {
-                refreshToken: refreshToken as string
+                // Save the refresh token in the database
+                await prisma.user.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        refreshToken: refreshToken as string
+                    }
+                });
+                res.json({accessToken: accessToken, refreshToken: refreshToken});
             }
-        });
-
-        res.json({accessToken: accessToken, refreshToken: refreshToken});
+        })  
     }catch(error) {
         console.error(error);
         res.status(500).json({msg: "Internal Server Error", error: error});
@@ -144,6 +158,12 @@ router.delete("/logout", validateToken, async (req: any, res: Response) => {
             },
             data: {
                 refreshToken: null
+            }
+        });
+
+        await prisma.matchmakingQueue.deleteMany({
+            where: {
+                playerId: user.id
             }
         });
         res.json({msg: "User Logged Out Successfully"});

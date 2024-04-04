@@ -3,9 +3,10 @@ import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import useCreateUserLazy from '../../Fetchs/CreateUser';
+import { Link, useLocation } from 'react-router-dom';
 
 interface InscriptionProps {
     open: boolean;
@@ -16,6 +17,7 @@ function Inscription({ open, onClose }: InscriptionProps) {
     const [formData, setFormData] = useState({username: "", email: "", password: ""})
     const {data, isLoading, error, createUser, reset} = useCreateUserLazy()
     const { enqueueSnackbar } = useSnackbar();
+    const location = useLocation();
 
     useEffect(() => {
         if(open) {
@@ -52,6 +54,7 @@ function Inscription({ open, onClose }: InscriptionProps) {
                 <TextField error={!!email_helperText} label="Adresse Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} fullWidth required sx={{mt: 2}} helperText={email_helperText}/>
                 <TextField error={!!password_helperText} label="Mot de passe" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} type="password" fullWidth required sx={{mt: 2}} helperText={password_helperText}/>
                 <Button variant="contained" type="submit" sx={{mt: 2, display: "block", mx: "auto"}} disabled={isLoading}>S'inscrire</Button>
+                <Typography variant="body2" sx={{mt: 2, textAlign: "center"}}>Déjà un compte ? <Link to={location.pathname.replace("inscription", "connexion")}>Se connecter</Link></Typography>
             </Box>
         </Dialog>
     );

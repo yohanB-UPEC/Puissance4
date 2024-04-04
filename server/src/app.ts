@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from 'cors';
 import UserRoutes from "./Routes/Users";
+import MatchMakingRoutes from "./Routes/Matchmaking";
 
 const app = express();
 const port = 3000;
@@ -19,6 +20,7 @@ app.use(
 );
 
 app.use("/", UserRoutes);
+app.use("/", MatchMakingRoutes);
 
 
 app.listen(port, () => {

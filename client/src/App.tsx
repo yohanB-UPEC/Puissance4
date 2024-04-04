@@ -3,15 +3,13 @@ import CustomDrawer from './Components/CustomDrawer';
 import { Box } from '@mui/material';
 import Puissance4 from './Components/Puissance4';
 import RightDrawer from './Components/RightDrawer';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <Box sx={{ display: 'flex', backgroundColor: "#9b9b9b" }}>
+    <Box sx={{ display: 'flex', backgroundColor: "#9b9b9b", minHeight: "100vh" }}>
         <CustomDrawer />
-        <Box sx={{width: "100%", display: "flex", justifyContent: "center", p:4}}>
-          <Puissance4/>
-        </Box>
-        <RightDrawer />
+        <Outlet />
     </Box>
   );
 }

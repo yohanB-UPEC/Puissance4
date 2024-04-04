@@ -14,13 +14,35 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Button } from '@mui/material';
 import Connexion from './Dialog/Connexion';
 import Inscription from './Dialog/Inscription';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import API, { useAuthenticated } from '../API';
+import { useSnackbar } from 'notistack';
 
 const drawerWidth = 240;
 
-
 function CustomDrawer() {
-    const [openConnexion, setOpenConnexion] = useState(false)
-    const [openInscription, setOpenInscription] = useState(false)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const authentified = useAuthenticated();
+    const { enqueueSnackbar } = useSnackbar();
+
+    function logout() {
+      API.sendData("/logout", "delete", {}, true)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then(() => {
+        API.setTokens(null, null);
+        enqueueSnackbar("Vous ètes maintenant déconnecté.", {autoHideDuration: 5000, variant: "success"});
+        navigate(location.pathname)
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la déconnexion :", error);
+      });
+    }
 
     return (
         <Drawer
@@ -41,7 +63,7 @@ function CustomDrawer() {
         <Divider />
         <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to="">
                 <ListItemIcon>
                   <SportsEsportsIcon/>
                 </ListItemIcon>
@@ -49,7 +71,7 @@ function CustomDrawer() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to="social">
                 <ListItemIcon>
                   <Groups2Icon/>
                 </ListItemIcon>
@@ -57,7 +79,7 @@ function CustomDrawer() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to="profile">
                 <ListItemIcon>
                   <AccountCircleIcon/>
                 </ListItemIcon>
@@ -67,14 +89,21 @@ function CustomDrawer() {
         </List>
         <Divider />
         
-        <Box p={2}>
-          <Button variant="contained" fullWidth onClick={() => setOpenConnexion(true)}>Se connecter</Button>
-          <Button variant="outlined" fullWidth onClick={() => setOpenInscription(true)} sx={{mt: 2}}>S'inscrire</Button>
-        </Box>
+        {!authentified ? (
+          <React.Fragment>
+            <Box p={2}>
+              <Button component={Link} variant="contained" fullWidth to={location.pathname === "/" ? "connexion" : location.pathname +"/connexion"}>Se connecter</Button>
+              <Button component={Link} variant="outlined" fullWidth to={location.pathname === "/" ? "inscription" : location.pathname +"/inscription"} sx={{mt: 2}} >S'inscrire</Button>
+            </Box>
+          </React.Fragment>
+        ) : (
+          <Box p={2} sx={{position: 'absolute', bottom: 8, width: "100%"}}>
+            <Button variant="contained" color="error" fullWidth onClick={logout}>Se déconnecter</Button>
+          </Box>
+        )}
         
-        <Connexion open={openConnexion} onClose={() => setOpenConnexion(false)} />
-        <Inscription open={openInscription} onClose={() => setOpenInscription(false)} />
-        
+        <Connexion open={location.pathname.endsWith("/connexion")} onClose={() => navigate(location.pathname.replace("/connexion", ""))} />
+        <Inscription open={location.pathname.endsWith("/inscription")} onClose={() => navigate(location.pathname.replace("/inscription", ""))} />
       </Drawer>
     )
 }
