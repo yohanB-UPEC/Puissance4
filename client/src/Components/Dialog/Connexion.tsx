@@ -38,6 +38,7 @@ function Connexion({ open, onClose }: ConnexionProps) {
             API.setTokens(result.accessToken, result.refreshToken);
             enqueueSnackbar("Vous ètes maintenant connecté.", {autoHideDuration: 5000, variant: "success"});
             onClose();
+            window.location.reload();
         })
         .catch((error) => {
             console.error("Erreur lors de la connexion de l'utilisateur :", error);
