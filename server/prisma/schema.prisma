@@ -41,10 +41,11 @@ model Match {
   player1Id    Int      // L'ID de joueur 1
   player2Id    Int     // L'ID de joueur 2
   boardState   String   // Représentation de l'état du plateau de jeu
-  currentPlayer Int
+  currentPlayer Int @default(1) 
   winnerId       Int?     // L'ID du joueur gagnant (peut être null si la partie est en cours ou si c'est une égalité)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  end          Boolean @default(false)
 
   // Clé étrangère pour lier le joueur 1
   player1      User     @relation(name: "Player1", fields: [player1Id], references: [id])

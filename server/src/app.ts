@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from 'cors';
 import UserRoutes from "./Routes/Users";
 import MatchMakingRoutes from "./Routes/Matchmaking";
+import MatchRoutes from "./Routes/Match";
 import { searchMatchmaking } from "./Services/MatchmakingService";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 
 app.use("/", UserRoutes);
 app.use("/", MatchMakingRoutes);
+app.use("/", MatchRoutes);
 
 
 app.listen(port, () => {

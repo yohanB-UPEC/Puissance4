@@ -6,6 +6,7 @@ import Home from './Pages/Home';
 import Social from './Pages/Social';
 import Profile from './Pages/Profile';
 import NotFound from './Pages/NotFound';
+import Match from './Pages/Match';
 
 
 const Router = createBrowserRouter(
@@ -16,6 +17,7 @@ const Router = createBrowserRouter(
                     <Route path="connexion" element={null}/>
                     <Route path="inscription" element={null}/>
                 </Route>
+                <Route path=":matchId" element={<Match />} />
                 <Route path="social" element={<Social/>}>
                     <Route path="connexion" element={null}/>
                     <Route path="inscription" element={null}/>

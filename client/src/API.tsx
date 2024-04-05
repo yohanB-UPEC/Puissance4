@@ -50,7 +50,7 @@ const API = {
         });
     },
     eventSource: (url: string, options: any, authenticated: boolean = false): Promise<void> => {
-        return fetchEventSource(`${API.url}/matchmaking/events`, {
+        return fetchEventSource(`${API.url}${url}`, {
             headers: { "authorization": `Bearer ${accessToken}` },
             ...options
         })
@@ -66,6 +66,11 @@ const API = {
             return requestRefreshToken();
         }
         return true; 
+    },
+    getUserId() {
+        if(!accessToken || accessToken === "") return null;
+        const token = jwtDecode(accessToken);
+        return token.userId;
     }
 }
 

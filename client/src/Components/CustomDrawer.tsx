@@ -38,6 +38,7 @@ function CustomDrawer() {
         API.setTokens(null, null);
         enqueueSnackbar("Vous ètes maintenant déconnecté.", {autoHideDuration: 5000, variant: "success"});
         navigate(location.pathname)
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Erreur lors de la déconnexion :", error);

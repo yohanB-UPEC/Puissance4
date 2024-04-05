@@ -11,6 +11,7 @@ import API from '../API';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import MatchmakingConfirmation from './Dialog/MatchmakingConfirmation';
 import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -23,6 +24,7 @@ function RightDrawer() {
       response: number;
     }>({open: false, data: null, response: 0});// 0: en attente, 1: accepté, 2: refusé
     const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate();
 
     useEffect(() => {
       let intervalId: any = null;
@@ -115,6 +117,7 @@ function RightDrawer() {
       setConfirmationDialog({open: false, data: null, response: 0});
       setInQueue({state: false, loading: false, time: 0});
       enqueueSnackbar("La partie va commencer.", {autoHideDuration: 5000, variant: "success"});
+      navigate(data.id+"")
     }
 
     let content = null;
