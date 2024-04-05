@@ -6,11 +6,11 @@ interface UserToken {
 }
 
 export function generateAccessToken(user: UserToken) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, {expiresIn: "20m"})
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET as string, {expiresIn: "40m"})
 }
 
 export function generateRefreshToken(user: UserToken) {
-    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET as string, {expiresIn: "30m"})
+    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET as string, {expiresIn: "60m"})
 }
 
 export function validateToken(req : any, res: Response, next: NextFunction) {

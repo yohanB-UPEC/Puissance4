@@ -188,7 +188,7 @@ router.get("/me", validateToken, async (req: any, res: Response) => {
         if (!user) {
             return res.status(403).json({msg: "Invalid token"});
         }
-        res.json({user: user});
+        res.json(user);
     }catch(error) {
         console.error(error);
         res.status(500).json({msg: "Internal Server Error", error: error});

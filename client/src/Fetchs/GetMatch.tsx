@@ -27,7 +27,7 @@ interface GetMatchResponse {
     error: any | null;
 }
 
-function useGetMatch<T>(matchId:any): GetMatchResponse {
+function useGetMatch(matchId:any): GetMatchResponse {
     const [data, setData] = useState<DataResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<any | null>(null);

@@ -68,6 +68,9 @@ router.get('/match/player/:id', async (req: any, res: Response) => {
                         name: true,
                     }
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
         res.status(200).json(matches);
