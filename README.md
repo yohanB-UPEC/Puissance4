@@ -28,6 +28,13 @@ Ce projet est une application web de puissance4. Il utilise TypeScript, Express.
 ## Configuration
 
 Assurez-vous de configurer correctement la connexion à votre base de données dans le fichier `server/.env`.
+Le fichier doit contenir ceci:
+```
+DATABASE_URL="postgresql://<user>:<password>@localhost:5432/<database>?schema=public"
+ACCESS_TOKEN_SECRET="5d7c082bf097bdcc719823d27f06da1640dd26fb5c28906d6d4716ee32c489ef659356285aff0c28a5b08b8c8476ff823aa010780f60b109abe93b0fdd4e7703"
+REFRESH_TOKEN_SECRET="8931e880ddc70739e5dd23ac06a6546e7006ec4407e925e1562ad80723981261a93d33ffb1bfc24d2fbd251a807420c9b1fb962fc8c1e292d4929dd93a605fe6"
+```
+
 Une fois la connexion à la base de données configuré, lancer cette commande pour créer les tables:
 ```bash
 npx prisma migrate dev
